@@ -3,12 +3,19 @@ import { GptMessage } from "../../components/chat-bubbles/GptMessage"
 import { MyMessage } from "../../components/chat-bubbles/MyMessage"
 import { TextMessageBox } from "../../components/chat-input-boxes/TextMessageBox"
 import { TypingLoader } from "../../components/loaders/TypingLoader"
+import { orthrographyCheckUseCase } from "../../../core/use-cases"
+import { GptMessageOrthography } from "../../components/chat-bubbles/GptMessageOrthography"
 //import { TextMessageBoxFile } from "../../components/chat-input-boxes/TextMessageBoxFile"
 //import { TextMessageBoxSelect } from "../../components/chat-input-boxes/TextMessageBoxSelect"
 
 interface Message {
   text: string;
   isGpt: boolean;
+  info: {
+    errors: string[];
+    message: string;
+    userScore: number;
+  }
 }
 
 export const OrthographyPage = () => {
@@ -16,12 +23,18 @@ export const OrthographyPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([])
 
-  const handleMessage = async (message: string) => {
+  const handleMessage = async (msj: string) => {
     setIsLoading(true);
-    setMessages([...messages, {text: message, isGpt: false}]);
+    const {message, ok, errors, userScore  } = await orthrographyCheckUseCase(msj);
+    if(!ok){
+      setMessages([...messages, {text: "No se pudo obtener la informacion", isGpt: false, info: {
+        errors: [],
+        message: "",
+        userScore: 0
+      }}]);
+    }
 
-    //TODO: use case
-
+    setMessages([...messages, {text: message, isGpt: true, info: { errors, message,userScore }}]);
 
     setIsLoading(false);
   }
@@ -36,7 +49,7 @@ export const OrthographyPage = () => {
           {
             messages.map((message, index) => {
               if(message.isGpt) {
-                return <GptMessage key={index} text={"Mensaje de GPT"} />
+                return <GptMessageOrthography key={index} {...message.info} />
               } else {
                 return <MyMessage key={index} text={message.text} />
               }
