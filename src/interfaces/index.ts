@@ -1,1 +1,1 @@
-export * from './OrthrographyResponse';
+export * from './TranslateResponse';
