@@ -24,19 +24,21 @@ export const OrthographyPage = () => {
   const [messages, setMessages] = useState<Message[]>([])
 
   const handleMessage = async (msj: string) => {
+    setMessages(messages => [...messages, {text: msj, isGpt: false, info: {errors: [],message: "",userScore: 0}}]);
     setIsLoading(true);
     const {message, ok, errors, userScore  } = await orthrographyCheckUseCase(msj);
     if(!ok){
-      setMessages([...messages, {text: "No se pudo obtener la informacion", isGpt: false, info: {
+      setMessages(messages => [...messages, {text: "No se pudo obtener la informacion", isGpt: false, info: {
         errors: [],
         message: "",
         userScore: 0
       }}]);
     }
 
-    setMessages([...messages, {text: message, isGpt: true, info: { errors, message,userScore }}]);
+    setMessages(messages => [...messages, {text: message, isGpt: true, info: { errors, message,userScore }}]);
 
     setIsLoading(false);
+    console.log(messages);
   }
 
 
