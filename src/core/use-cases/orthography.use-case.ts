@@ -1,4 +1,4 @@
-import { OrthographyResponse } from "../../interfaces";
+import { OrthographyResponse } from "../../interfaces/OrthrographyResponse";
 
 export const orthrographyCheckUseCase = async (prompt: string) => {
 
