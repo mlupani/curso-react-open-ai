@@ -3,7 +3,7 @@ import { GptMessage } from "../../components/chat-bubbles/GptMessage";
 import { MyMessage } from "../../components/chat-bubbles/MyMessage";
 import { TextMessageBox } from "../../components/chat-input-boxes/TextMessageBox";
 import { TypingLoader } from "../../components/loaders/TypingLoader";
-import { prosConsDiscusserStreamGeneratorUseCase } from "../../../core/use-cases/pros-cons-discusser-stream-generator.use-case";
+import { prosConsDiscusserStreamGeneratorUseCase } from "../../../core/use-cases/pros-cons/pros-cons-discusser-stream-generator.use-case";
 
 interface Message {
   text: string;
